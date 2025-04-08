@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const useProjects = () => {
+const UseProjects = () => {
   const [projects, setProjects] = useState([]);
   //   const [loading, setLoading] = useState(true);
   const apiUrl = "https://localhost:7285/api/projects";
@@ -23,4 +23,4 @@ const useProjects = () => {
   return { projects };
 };
 
-export default useProjects;
+export default UseProjects;

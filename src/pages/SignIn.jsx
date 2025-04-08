@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import CardForm from "./CardForm/CardForm";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import SignInApi from "../api/SignInApi";
 
 const SignIn = () => {
   const { signIn } = useAuth();
@@ -9,11 +10,9 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
+    //SignInApi(e, email, password);
+    console.log("YOYOYOYOYOYOYOYOYOYOY");
     e.preventDefault();
-
-    const succeeded = await signIn(email, password);
-    if (succeeded) console.log("inloggning lyckades");
-    else console.log("inloggning misslyckades");
   };
 
   const inputs = [
@@ -41,6 +40,7 @@ const SignIn = () => {
       inputs={inputs}
       submitText="Login"
       onSubmit={handleSubmit}
+      //checkbox={true}
       cardFooterHtml={
         <>
           <span>Don't have an account? </span>
