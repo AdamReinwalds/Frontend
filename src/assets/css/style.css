@@ -5,6 +5,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  font-family: var(--font-standard);
 }
 
 :root {
@@ -91,7 +92,7 @@
   --table-header-text-color: var(--gray-800);
   --table-tbody-tr-background-hover-color: var(--blue-accent-10);
 
-  --modal-screen-background-color: var(--dark-100-a);
+  --modal-screen-background-color: rgba(0, 0, 0, 0.5);
   --modal-background-color: var(--white);
 
   --form-text-color: var(--white);
@@ -110,9 +111,31 @@
   --form-error-message-text-color: var(--red-dark);
   --form-error-message-background-color: var(--red-light);
   --form-error-message-border-color: var(--red-light);
+
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-regular: 400;
+  --font-weight-light: 300;
+  --font-weight-thin: 200;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
 }
 
 /* structure */
+html::-webkit-scrollbar,
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+html::-webkit-scrollbar-thumb,
+.modal-content::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); /* Make scrollbar visible */
+  border-radius: 4px; /* Optional: rounded edges */
+}
+
+html::-webkit-scrollbar-track,
+.modal-content::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1); /* Optional: track background */
+}
 
 html,
 body {
@@ -129,7 +152,8 @@ body {
   display: grid;
   justify-content: center;
   align-items: center;
-  height: 100dvh;
+  /* height: 100dvh; */
+  background-color: #eaecf0;
 }
 
 .wrapper-portal {
@@ -253,6 +277,91 @@ h6,
   font-weight: 600;
 }
 
+.projects-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 350px);
+  gap: 34px;
+  margin-top: 2rem;
+  justify-content: center;
+  justify-items: center;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  width: 100%;
+  min-height: 272px;
+  border-radius: 16px;
+  padding: 24px;
+
+  box-shadow: 0px 20px 30px -18px rgba(4, 15, 21, 0.1);
+}
+.project-card__header {
+  font-weight: var(--font-weight-semibold);
+  font-size: 18px;
+  color: var(--text-headline-color);
+}
+.project-card__header-container {
+  display: flex;
+  align-items: center;
+}
+.project-card__header-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-left: 16px;
+  margin-right: 56px;
+}
+.projects-list__sorting {
+  display: flex;
+  gap: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+.projects-list__sorting > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sorting-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: var(--font-standard);
+  color: var(--text-color);
+}
+.sorting-button.active {
+  color: var(--blue);
+}
+
+.sorting-button::after {
+  content: "";
+  display: block;
+
+  width: 100%;
+  background: transparent;
+  border-radius: 5px 5px 0 0;
+  color: var(--blue);
+}
+
+.sorting-button.active::after {
+  background-color: var(--blue);
+  height: 5px;
+}
+
+.project-card__client {
+  margin: 0;
+  font-size: 15px;
+  font-weight: var(--font-weight-regular);
+  color: var(--gray-800);
+  margin-top: 2px;
+}
+.project-card__image {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+}
 @media (width >= 768px) {
   h1,
   .h1 {
@@ -450,6 +559,7 @@ a:hover {
   padding: 0;
   transition: background-color 0.1s ease-in-out, border-color 0.1s ease-in-out,
     color 0.1s ease-in-out;
+  align-self: flex-start;
 }
 .btn-close:hover {
   color: var(--text-muted-color);
@@ -466,26 +576,38 @@ a:hover {
 
 /* modals */
 .modal {
-  background-color: var(--modal-screen-background-color);
-  display: none;
-  justify-content: center;
-  align-items: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  box-shadow: 0 3px 4px 1px rgba(0, 0, 0, 0.1);
+  background-color: var(--modal-background-color);
+  overflow: hidden;
+  border-radius: 16px;
+  width: 550px;
+}
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--modal-screen-background-color);
+  z-index: 1;
 }
 
 .modal > .modal-content {
-  background-color: var(--modal-background-color);
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 3px 4px 1px rgba(0, 0, 0, 0.1);
-  width: 90%;
+  padding: 30px;
+  overflow: auto;
+  max-height: 90vh;
+}
+.lock-scroll {
+  overflow: hidden;
+  padding-right: 8px;
 }
 
-.modal > .modal-content header,
+.modal > .modal-content .header,
 .modal > .modal-content .modal-header {
   display: flex;
   justify-content: space-between;
@@ -493,8 +615,27 @@ a:hover {
   margin-bottom: 2rem;
 }
 
-.modal > .modal-content main,
-.modal > .modal-content .modal-body {
+.custom-select {
+  appearance: none;
+  cursor: pointer;
+  color: var(--gray-800);
+}
+.custom-select.valid {
+  color: var(--text-color);
+}
+
+.select-wrapper {
+  position: relative;
+  display: inline-block;
+}
+.select-wrapper::after {
+  content: "⋯"; /* Unicode for three dots */
+  font-size: 20px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
 }
 
 /* forms */
@@ -512,6 +653,12 @@ form textarea {
   border: 1px solid var(--form-input-border-color);
   transition: border-color 0.1s ease-in-out;
   outline: none;
+  font-weight: var(--font-weight-regular);
+  color: var(--text-color);
+  resize: none;
+}
+form div {
+  gap: 9px;
 }
 
 form input:focus,
@@ -524,7 +671,7 @@ form input::placeholder,
 form select::placeholder,
 form textarea::placeholder {
   color: var(--form-input-placeholder-color);
-  font-size: 0.9em;
+  font-size: 16px;
 }
 
 form .form-group {
@@ -555,6 +702,10 @@ form input[type="checkbox"] {
   height: 20px;
   width: 20px;
 }
+.disabled-option {
+  color: var(--gray-800);
+  background-color: var(--white-100);
+}
 
 .input-validation-error,
 .input-validation-error:focus {
@@ -579,6 +730,31 @@ form input[type="checkbox"] {
   content: "\f071";
   font-family: var(--font-fa-pro);
   font-size: 1.2em;
+}
+
+.modal-dates {
+  display: flex;
+  gap: 24px;
+}
+
+#project-budget {
+  position: relative;
+}
+.dollar-img {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+}
+
+#project-budget-input {
+  --webkit-appearance: none;
+  padding-left: 44px;
+}
+#project-description {
+  height: 143px;
 }
 
 /* sections & components */
@@ -610,41 +786,143 @@ section > .content {
   grid-template-columns: 1fr;
   gap: 2rem;
 }
+.date-container {
+  flex-grow: 1;
+}
+.date-picker-container {
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px 12px;
+  display: flex;
+  width: 100%;
+  max-width: 250px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 14px;
+  gap: 24px;
+  height: 48px;
+  cursor: pointer;
+}
+.date-picker-input {
+  visibility: hidden;
+  height: 1px;
+  width: 1px;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
 
 /* custom modals */
 #addClientModal .modal-content {
   width: 450px;
 }
+.modal-form {
+  input,
+  select {
+    height: 48px;
+  }
+}
+
+.modal-div {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+}
+
+#signin-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
 #signup,
 #signin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 80%;
-  margin: 0 auto;
-}
-#signup .content,
-#signin .content {
-  padding: 2rem 4rem 1rem;
-}
-
-#signup .section-header,
-#signin .section-header {
-  text-align: center;
+  margin: 20px auto;
+  border-radius: 16px;
+  background-color: var(--white);
+  .card-body {
+    padding: 2rem 4rem 1rem;
+  }
 }
 
-#signup .section-body,
-#signin .section-body {
-  margin: 1rem 0;
+.avatar-image {
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
 }
 
-#signup .section-footer,
-#signin .section-footer {
-  text-align: center;
-  margin-top: 2rem;
-}
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  > div {
+    width: 100%;
+    margin-bottom: 31px;
+    display: flex;
+    justify-content: center;
+  }
+  label {
+    font-family: var(--font-standard);
+    color: var(--form-label-color);
+    font-weight: var(--font-weight-semibold);
+  }
+  input {
+    width: 100%;
+    font-size: 1em;
+    padding-top: 7px;
+    border-radius: 14px;
+    border: 1px solid var(--form-input-border-color);
+    transition: border-color 0.1s ease-in-out;
+    outline: none;
+    color: var(--text-color);
+  }
+  button {
+    width: 100%;
+    font-size: 1em;
+    padding: 14px 24px;
+    border-radius: 14px;
+    background-color: var(--btn-background-color);
+    color: var(--button-text-color);
+    outline: none;
+    border: none;
+    cursor: pointer;
+  }
 
-@media (width >= 768px) {
-  #signup,
-  #signin {
-    width: 30%;
+  #signup .content,
+  #signin .content {
+    padding: 2rem 4rem 1rem;
+  }
+
+  #signup .section-header,
+  #signin .section-header {
+    text-align: center;
+  }
+
+  #signup .section-body,
+  #signin .section-body {
+    margin: 1rem 0;
+  }
+
+  #signup .section-footer,
+  #signin .section-footer {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  @media (width >= 768px) {
+    #signup,
+    #signin {
+      width: 100%;
+    }
   }
 }

@@ -16,7 +16,10 @@ const routesConfig = [
     element: <CenterScreenLayout />,
     children: [
       { path: "/auth/signup", element: <SignUp /> },
-      { path: "/auth/signin", element: <SignIn /> },
+      {
+        path: "/auth/signin",
+        element: <SignIn />,
+      },
     ],
   },
   {
