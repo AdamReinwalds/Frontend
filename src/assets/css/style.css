@@ -297,6 +297,10 @@ h6,
 
   box-shadow: 0px 20px 30px -18px rgba(4, 15, 21, 0.1);
 }
+.project-card.focused {
+  background-color: hsl(0, 0%, 98%);
+  transition: 3ms background-color ease-in-out;
+}
 .project-card__header {
   font-weight: var(--font-weight-semibold);
   font-size: 18px;
@@ -326,7 +330,7 @@ h6,
   width: 40px;
   border-radius: 12px;
 }
-.project-card__button:hover {
+.project-card__button.active {
   background-color: #f5f7fa;
 }
 
@@ -348,11 +352,11 @@ h6,
   z-index: 2;
   position: absolute;
   right: 0;
-  top: 10px;
+  top: 20px;
   width: 230px;
   display: flex;
   flex-direction: column;
-
+  box-shadow: 0px 20px 30px -18px rgba(4, 15, 21, 0.1);
   border-radius: 14px;
   background-color: var(--white);
   padding: 8px;

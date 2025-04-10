@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import Avatar from "../../assets/images/Avatar.svg";
 import dollar from "../../assets/images/dollar.svg";
 import DatePicker from "./DatePicker";
+import { UseProjects } from "../../api/projects/UseProjects";
 
-const Modal = ({ isOpen, onClose }) => {
+const Modal = ({ isOpen, onClose, addProject }) => {
   const [selectedImage, setSelectedImage] = useState(Avatar);
   const [modalData, setModalData] = useState({
     projectName: "",
@@ -21,6 +22,7 @@ const Modal = ({ isOpen, onClose }) => {
       [key]: e.target.value,
     }));
   };
+
   const [selected, setSelected] = useState("");
   const handleSelectChange = (e) => {
     setSelected(e.target.value);
@@ -29,17 +31,28 @@ const Modal = ({ isOpen, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log("Form submitted:", modalData);
+    const projectData = {
+      Image: "",
+      ProjectName: modalData.projectName,
+      Description: modalData.projectDescription,
+      StartDate: modalData.projectStartDate,
+      EndDate: modalData.projectEndDate,
+      Budget: modalData.budget,
+      UserId: "8b3ca3a9-6cc7-4be7-a1fe-f1ab470ebbac",
+      ClientId: "423b8e58-f690-41ee-80ae-4b4d5f12bdf8",
+    };
+    console.log("Project data:", projectData);
+    addProject(projectData); // Call the addProject function from UseProjects
 
     onClose(); // Close the modal after submission
   };
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setSelectedImage(URL.createObjectURL(file));
-    }
-  };
+  // const handleImageChange = (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     setSelectedImage(URL.createObjectURL(file));
+  //   }
+  // };
   if (!isOpen) return null;
 
   return (
@@ -65,6 +78,7 @@ const Modal = ({ isOpen, onClose }) => {
                 id="project-name"
                 type="text"
                 placeholder="Enter project name"
+                onChange={(e) => handleInputChange(e, "projectName")}
                 required
               />
             </div>
@@ -75,11 +89,11 @@ const Modal = ({ isOpen, onClose }) => {
                   name="client-name"
                   id="client-name"
                   className={`custom-select ${selected ? "valid" : ""}`}
-                  onChange={handleSelectChange}
-                  value={selected}
-                  defaultValue={""}
+                  onChange={(e) => handleInputChange(e, "clientName")}
+                  onClick={handleSelectChange}
+                  value={modalData.clientName}
                 >
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     Select client
                   </option>
                   <option value="client1">Client 1</option>
@@ -93,6 +107,8 @@ const Modal = ({ isOpen, onClose }) => {
               <textarea
                 id="project-description"
                 placeholder="Type something"
+                value={modalData.projectDescription}
+                onChange={(e) => handleInputChange(e, "projectDescription")}
                 required
               />
             </div>
@@ -124,12 +140,12 @@ const Modal = ({ isOpen, onClose }) => {
                 <select
                   name="project-owner"
                   id="project-project-owner"
-                  defaultValue={""}
                   className={`custom-select ${selected ? "valid" : ""}`}
-                  onChange={handleSelectChange}
-                  value={selected}
+                  onChange={(e) => handleInputChange(e, "projectOwner")}
+                  onClick={handleSelectChange}
+                  value={modalData.projectOwner}
                 >
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     Select project owner
                   </option>
                   <option value="owner1">Owner 1</option>
@@ -147,6 +163,8 @@ const Modal = ({ isOpen, onClose }) => {
                   id="project-budget-input"
                   min="0"
                   placeholder="0"
+                  onChange={(e) => handleInputChange(e, "budget")}
+                  value={modalData.budget}
                 />
               </div>
             </div>

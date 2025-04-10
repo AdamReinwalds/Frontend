@@ -2,7 +2,7 @@ import React from "react";
 import editIcon from "../../assets/images/edit.svg";
 import deleteIcon from "../../assets/images/delete.svg";
 
-const DropDownModal = ({ onEdit, onDelete, onClose, isOpen }) => {
+const DropdownModal = ({ onEdit, onDelete, onClose, isOpen }) => {
   if (!isOpen) return null;
 
   return (
@@ -19,4 +19,4 @@ const DropDownModal = ({ onEdit, onDelete, onClose, isOpen }) => {
   );
 };
 
-export default DropDownModal;
+export default DropdownModal;

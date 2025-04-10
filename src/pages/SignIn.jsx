@@ -11,7 +11,6 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     //SignInApi(e, email, password);
-    console.log("YOYOYOYOYOYOYOYOYOYOY");
     e.preventDefault();
   };
 

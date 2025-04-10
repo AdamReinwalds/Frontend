@@ -1,17 +1,16 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import ModalButton from "../partials/components/ModalButton";
 import Modal from "../partials/components/Modal";
 import image from "../assets/images/image.svg";
-import UseProjects from "../api/UseProjects.jsx";
-import DropDownModal from "../partials/components/DropDownModal.jsx";
+import { UseProjects } from "../api/projects/UseProjects.jsx";
+import DropdownModal from "../partials/components/DropdownModal.jsx";
 
 const Projects = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDropDownModalOpen, setIsDropDownModalOpen] = useState(null);
+  const [isDropdownModalOpen, setIsDropdownModalOpen] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
   const [activeFilter, setActiveFilter] = useState("all");
-  const { projects } = UseProjects();
-  console.log(projects);
+  const { projects, addProject, fetchProjects } = UseProjects();
 
   let numberOfProjects = projects.length;
 
@@ -22,23 +21,24 @@ const Projects = () => {
     }
   });
 
-  const handleDropDownModalOpen = (projectId) => {
-    if (isDropDownModalOpen === projectId) {
-      setIsDropDownModalOpen(null);
+  const handleDropdownModalOpen = (projectId) => {
+    if (isDropdownModalOpen === projectId) {
+      setIsDropdownModalOpen(null);
       setSelectedProject(null);
+
       return;
     }
     setSelectedProject(projectId);
-    setIsDropDownModalOpen(projectId);
+    setIsDropdownModalOpen(projectId);
   };
 
-  const handleDropDownModalClose = () => {
-    setIsDropDownModalOpen(!isDropDownModalOpen);
+  const handleDropdownModalClose = () => {
+    setIsDropdownModalOpen(!isDropdownModalOpen);
     setSelectedProject(null);
   };
 
   const handleModalOpen = () => {
-    setIsDropDownModalOpen(null);
+    setIsDropdownModalOpen(null);
     setIsModalOpen(true);
     document.documentElement.classList.add("lock-scroll");
   };
@@ -81,7 +81,12 @@ const Projects = () => {
       </div>
       <div className="projects-list">
         {filteredProjects.map((project) => (
-          <div key={project.id} className="project-card">
+          <div
+            key={project.id}
+            className={`project-card ${
+              isDropdownModalOpen === project.id ? "focused" : ""
+            }`}
+          >
             <div className="project-card__header-container">
               <img
                 className="project-card__image"
@@ -95,19 +100,21 @@ const Projects = () => {
                 </p>
               </div>
               <button
-                className="project-card__button"
-                onClick={() => handleDropDownModalOpen(project.id)}
+                className={`project-card__button ${
+                  isDropdownModalOpen === project.id ? "active" : ""
+                }`}
+                onClick={() => handleDropdownModalOpen(project.id)}
               >
                 <div className="dot" />
                 <div className="dot" />
                 <div className="dot" />
               </button>
               <div className="project-actions">
-                {isDropDownModalOpen === project.id && (
-                  <DropDownModal
+                {isDropdownModalOpen === project.id && (
+                  <DropdownModal
                     onEdit={() => {}}
                     onDelete={() => {}}
-                    onClose={handleDropDownModalClose}
+                    onClose={handleDropdownModalClose}
                     isOpen={true}
                   />
                 )}
@@ -118,7 +125,11 @@ const Projects = () => {
         ))}
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={() => handleModalClose()} />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => handleModalClose()}
+        addProject={addProject}
+      />
     </div>
   );
 };
