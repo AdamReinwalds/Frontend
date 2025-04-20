@@ -2,12 +2,10 @@ import React from "react";
 import editIcon from "../../assets/images/edit.svg";
 import deleteIcon from "../../assets/images/delete.svg";
 
-const DropdownModal = ({ onEdit, onDelete, onClose, isOpen }) => {
-  if (!isOpen) return null;
-
+const DropdownModal = ({ onEditClick, onDelete }) => {
   return (
     <div className="dropdown-modal">
-      <button className="dropdown-item" onClick={onEdit}>
+      <button className="dropdown-item" onClick={onEditClick}>
         <img src={editIcon} alt="" />
         Edit
       </button>

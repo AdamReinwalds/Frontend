@@ -14,6 +14,7 @@ const SignInApi = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       },
       body: JSON.stringify(formData),
     });
@@ -27,7 +28,7 @@ const SignInApi = () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("accesstoken")}`,
+        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       },
     });
     if (response.ok) {

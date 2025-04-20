@@ -1,7 +1,14 @@
 import React, { useRef } from "react";
 import calendar from "../../assets/images/calendar.svg";
 
-const DatePicker = ({ onChange, dateValue, id, required, placeholder }) => {
+const DatePicker = ({
+  onChange,
+  dateValue,
+  id,
+  required,
+  placeholder,
+  minDate,
+}) => {
   const dateInputRef = useRef(null);
 
   const handleInputClick = () => {
@@ -19,6 +26,7 @@ const DatePicker = ({ onChange, dateValue, id, required, placeholder }) => {
         value={dateValue}
         required={required}
         type="date"
+        min={minDate}
       />
 
       <div>{dateValue || placeholder}</div>

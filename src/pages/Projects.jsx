@@ -1,44 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ModalButton from "../partials/components/ModalButton";
-import Modal from "../partials/components/Modal";
+import AddProjectModal from "../partials/components/AddProjectModal.jsx";
 import image from "../assets/images/image.svg";
-import { UseProjects } from "../api/projects/UseProjects.jsx";
+import { fetchProjects, deleteProject } from "../api/project.js";
 import DropdownModal from "../partials/components/DropdownModal.jsx";
+import EditProjectModal from "../partials/components/EditProjectModal.jsx";
+import LoadingSpinner from "../partials/components/LoadingSpinner.jsx";
 
 const Projects = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDropdownModalOpen, setIsDropdownModalOpen] = useState(null);
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [activeDropDown, setActiveDropDown] = useState(null);
+  const [selectedEditProjectId, setselectedEditProjectId] = useState(null);
   const [activeFilter, setActiveFilter] = useState("all");
-  const { projects, addProject, fetchProjects } = UseProjects();
+  const [projects, setProjects] = useState([]);
+
+  const fetchProjectsData = async () => {
+    setIsLoading(true);
+    const data = await fetchProjects();
+    setProjects(data);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchProjectsData();
+  }, []);
 
   let numberOfProjects = projects.length;
 
   let numberOfCompletedProjects = 0;
   projects.forEach((project) => {
-    if (project.status === "COMPLETED") {
+    if (project.status.statusName === "COMPLETED") {
       numberOfCompletedProjects++;
     }
   });
 
-  const handleDropdownModalOpen = (projectId) => {
-    if (isDropdownModalOpen === projectId) {
-      setIsDropdownModalOpen(null);
-      setSelectedProject(null);
-
-      return;
-    }
-    setSelectedProject(projectId);
-    setIsDropdownModalOpen(projectId);
+  const toggleDropdownModalOpen = (projectId) => {
+    setActiveDropDown(projectId === activeDropDown ? null : projectId);
   };
 
-  const handleDropdownModalClose = () => {
-    setIsDropdownModalOpen(!isDropdownModalOpen);
-    setSelectedProject(null);
+  const handleDeleteProject = async (projectId) => {
+    await deleteProject(projectId);
+    fetchProjectsData();
+    setActiveDropDown(null);
   };
 
   const handleModalOpen = () => {
-    setIsDropdownModalOpen(null);
     setIsModalOpen(true);
     document.documentElement.classList.add("lock-scroll");
   };
@@ -50,7 +58,7 @@ const Projects = () => {
   const filteredProjects =
     activeFilter === "all"
       ? projects
-      : projects.filter((project) => project.status === "COMPLETED");
+      : projects.filter((project) => project.status.statusName === "COMPLETED");
 
   return (
     <div id="projects">
@@ -84,13 +92,13 @@ const Projects = () => {
           <div
             key={project.id}
             className={`project-card ${
-              isDropdownModalOpen === project.id ? "focused" : ""
+              activeDropDown === project.id ? "focused" : ""
             }`}
           >
             <div className="project-card__header-container">
               <img
                 className="project-card__image"
-                src={image}
+                src={project.image || image}
                 alt="project image"
               />
               <div className="project-card__header-wrapper">
@@ -101,21 +109,25 @@ const Projects = () => {
               </div>
               <button
                 className={`project-card__button ${
-                  isDropdownModalOpen === project.id ? "active" : ""
+                  activeDropDown === project.id ? "active" : ""
                 }`}
-                onClick={() => handleDropdownModalOpen(project.id)}
+                onClick={() => toggleDropdownModalOpen(project.id)}
               >
                 <div className="dot" />
                 <div className="dot" />
                 <div className="dot" />
               </button>
               <div className="project-actions">
-                {isDropdownModalOpen === project.id && (
+                {activeDropDown === project.id && (
                   <DropdownModal
-                    onEdit={() => {}}
-                    onDelete={() => {}}
-                    onClose={handleDropdownModalClose}
-                    isOpen={true}
+                    onEditClick={() => {
+                      setselectedEditProjectId(project.id);
+                      setActiveDropDown(null);
+                    }}
+                    onDelete={() => {
+                      handleDeleteProject(project.id);
+                    }}
+                    onClose={() => setselectedEditProjectId(null)}
                   />
                 )}
               </div>
@@ -124,12 +136,21 @@ const Projects = () => {
           </div>
         ))}
       </div>
+      {isLoading && <LoadingSpinner />}
 
-      <Modal
+      <AddProjectModal
         isOpen={isModalOpen}
-        onClose={() => handleModalClose()}
-        addProject={addProject}
+        onClose={handleModalClose}
+        onProjectsUpdate={fetchProjectsData}
       />
+      {selectedEditProjectId && (
+        <EditProjectModal
+          isOpen={isEditModalOpen}
+          onClose={() => setselectedEditProjectId(null)}
+          projectId={selectedEditProjectId}
+          onProjectsUpdate={fetchProjectsData}
+        />
+      )}
     </div>
   );
 };

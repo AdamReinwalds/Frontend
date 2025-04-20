@@ -4,7 +4,9 @@ const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const apiEndpoint = "https://localhost:7285/api/auth";
+  const apiEndpoint =
+    "https://crm-webbapp-cch9asgnhdfba3c6.swedencentral-01.azurewebsites.net/api/auth";
+
   const defaultValues = {
     accessToken: null,
     role: "admin",
@@ -17,7 +19,12 @@ export const AuthProvider = ({ children }) => {
     setAuth({ ...defaultValues, loading: false });
 
     try {
-      const response = await fetch(apiEndpoint);
+      const response = await fetch(apiEndpoint, {
+        headers: {
+          "X-API-KEY": import.meta.env.VITE_X_API_KEY,
+        },
+        credentials: "include",
+      });
 
       if (response.ok) {
         const data = await response.json();

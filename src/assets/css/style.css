@@ -386,11 +386,7 @@ h6,
   gap: 20px;
   border-bottom: 1px solid var(--border-color);
 }
-.projects-list__sorting > div {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+
 .sorting-button {
   background: none;
   border: none;
@@ -684,6 +680,23 @@ a:hover {
   margin-bottom: 2rem;
 }
 
+.modal-button {
+  font-family: var(--font-standard);
+  font-size: 15px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--white);
+}
+
+.image-input {
+  display: none;
+}
+
+.avatar-image {
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
+}
+
 .custom-select {
   appearance: none;
   cursor: pointer;
@@ -923,9 +936,7 @@ section > .content {
   }
 }
 
-.avatar-image {
-  width: 150px;
-  height: 150px;
+#terms {
   cursor: pointer;
 }
 

@@ -7,7 +7,7 @@ const CardForm = ({
   inputs,
   submitText,
   onSubmit,
-  checkbox,
+  cardCheckboxHtml,
   cardFooterHtml,
 }) => {
   const inputsHtml = inputs.map((input) => (
@@ -33,20 +33,7 @@ const CardForm = ({
         <div className="cardForm__body">
           <form className="cardForm__form" onSubmit={onSubmit}>
             <div className="cardForm__inputsContainer">{inputsHtml}</div>
-            {/* {checkbox && (
-              <div className="cardForm__checkboxWrapper">
-                <input
-                  type="checkbox"
-                  id="rememberMe"
-                  className="cardForm__checkbox"
-                  checked={checkbox.checked}
-                  onChange={checkbox.onChange}
-                />
-                <label htmlFor="rememberMe" className="cardForm__label">
-                  Remember me
-                </label>
-              </div>
-            )} */}
+            {cardCheckboxHtml}
             <button type="submit">{submitText}</button>
           </form>
           <div className="cardForm__cardFooter">{cardFooterHtml}</div>

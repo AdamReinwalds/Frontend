@@ -46,7 +46,7 @@ const routesConfig = [
           </AdminRoute>
         ),
       },
-      { path: "*", element: <Navigate to="/admin/projects" replace /> },
+      { path: "*", element: <Navigate to="/auth/signin" replace /> },
     ],
   },
 ];
