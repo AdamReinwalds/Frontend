@@ -1,12 +1,44 @@
-# React + Vite
+# Frontend for Alpha
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Built with React and Vite**
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Responsive design
+- Integration with ASP.NET backend API
+- User authentication and authorization
+- CRUD operations for main entities
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+
+- Node.js and npm installed
+- Backend API running (see backend README for setup)
+
+### Installation
+
+```bash
+npm install
+```
+
+### Running the Application
+
+```bash
+npm start
+```
+
+The app will be available at `http://localhost:3000`.
+
+## Configuration
+
+Update API endpoints in the configuration file if necessary to match your backend setup.
+
+## Folder Structure
+
+- `src/` - Main source code
+- `public/` - Static files
+
+## Contributing
+
+Feel free to submit issues or pull requests.
